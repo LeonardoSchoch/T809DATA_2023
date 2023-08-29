@@ -18,7 +18,10 @@ def prior(targets: np.ndarray, classes: list) -> np.ndarray:
     Calculate the prior probability of each class type
     given a list of all targets and all class types
     '''
-    ...
+    p = np.array([])
+    for c in classes:
+        p = np.append(p, np.count_nonzero(np.array(targets) == c) / len(targets))
+    return p
 
 
 def split_data(
@@ -31,11 +34,11 @@ def split_data(
     Split a dataset and targets into two seperate datasets
     where data with split_feature < theta goes to 1 otherwise 2
     '''
-    features_1 = features[...]
-    targets_1 = targets[...]
+    features_1 = features[np.where(features[:, split_feature_index] < theta)[0]]
+    targets_1 = targets[np.where(features[:, split_feature_index] < theta)[0]]
 
-    features_2 = features[...]
-    targets_2 = targets[...]
+    features_2 = features[np.where(features[:, split_feature_index] >= theta)[0]]
+    targets_2 = targets[np.where(features[:, split_feature_index] >= theta)[0]]
 
     return (features_1, targets_1), (features_2, targets_2)
 
@@ -45,7 +48,7 @@ def gini_impurity(targets: np.ndarray, classes: list) -> float:
     Calculate:
         i(S_k) = 1/2 * (1 - sum_i P{C_i}**2)
     '''
-    ...
+    return 0.5*(1-np.sum(np.power(prior(targets, classes), 2)))
 
 
 def weighted_impurity(
@@ -57,10 +60,10 @@ def weighted_impurity(
     Given targets of two branches, return the weighted
     sum of gini branch impurities
     '''
-    g1 = gini_impurity(...)
-    g2 = gini_impurity(...)
+    g1 = gini_impurity(t1, classes)
+    g2 = gini_impurity(t2, classes)
     n = t1.shape[0] + t2.shape[0]
-    ...
+    return (t1.shape[0] * g1 / n) + (t2.shape[0] * g2 / n)
 
 
 def total_gini_impurity(
@@ -74,7 +77,8 @@ def total_gini_impurity(
     Calculate the gini impurity for a split on split_feature_index
     for a given dataset of features and targets.
     '''
-    ...
+    (f_1, t_1), (f_2, t_2) = split_data(features, targets, split_feature_index, theta)
+    return weighted_impurity(t_1, t_2, classes)
 
 
 def brute_best_split(
@@ -94,10 +98,12 @@ def brute_best_split(
     # iterate feature dimensions
     for i in range(features.shape[1]):
         # create the thresholds
-        thetas = ...
+        thetas = np.linspace(min(features[:, i]), max(features[:, i]), num_tries + 2)[1:-1]
         # iterate thresholds
         for theta in thetas:
-            ...
+            crt_gini = total_gini_impurity(features, targets, classes, i, theta)
+            if crt_gini < best_gini:
+                best_gini, best_dim, best_theta = crt_gini, i, theta
     return best_gini, best_dim, best_theta
 
 
@@ -121,13 +127,14 @@ class IrisTreeTrainer:
         self.tree = DecisionTreeClassifier()
 
     def train(self):
-        ...
+        self.tree.fit(self.train_features, self.train_targets)
 
     def accuracy(self):
-        ...
+        return self.tree.score(self.test_features, self.test_targets)
 
     def plot(self):
-        ...
+        plot_tree(self.tree)
+        plt.show()
 
     def plot_progress(self):
         # Independent section
@@ -135,7 +142,12 @@ class IrisTreeTrainer:
         ...
 
     def guess(self):
-        ...
+        return self.tree.predict(self.test_features)
 
     def confusion_matrix(self):
-        ...
+        n = len(self.classes)
+        matrix = np.zeros((n, n), dtype=int)
+        for i in range(n):
+            for j in range(n):
+                matrix[i, j] = np.sum((self.test_targets == self.classes[i]) & (self.guess() == self.classes[j]))
+        return matrix
