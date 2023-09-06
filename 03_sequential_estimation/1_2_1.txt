@@ -1,0 +1,9 @@
+Do you expect the batch estimate to be exactly (0, 1, -1)(0,1,−1) ?
+
+No not exactly, it may differ from the real estimate, but should lie close to it depending on the number of samples.
+
+
+
+Which two parameters can be used to make this estimate more accurate?
+
+You can increase the number of samples n, or decrease the variance var to be more accurate.
