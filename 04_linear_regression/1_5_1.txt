@@ -1,0 +1,4 @@
+It is visible that the prediction performs much better in the first 100 samples of the data set.
+After that the values fluctuate more and the mean squared error increases towards the actual values.
+
+Also the prediction seems to predict a way more stable function whilst the actual values fluctuate more.
