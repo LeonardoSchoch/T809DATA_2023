@@ -24,7 +24,7 @@ $$
 We control the shift of the basis function using the mean vector $\mu_k$  but we force all covariance matrices to be identical and diagonal $\Sigma_k = \sigma\mathbf{I}$ for all $k$ so $\sigma$ is the parameter that controls the width of all the basis functions (in all directions).
 
 ### Section 1.1
-Create a function `mvn_basis(features, mu, sigma)` that applies the multivariate normal basis function on the set of features. You should use `scipy.stats.multivariate_normal` to create your multivariate gaussians.
+Create a function `mvn_basis(features, mu, sigma)` that applies the multivariate normal basis function on the set of features. You should use the `scipy.stats.multivariate_normal` object to create your multivariate gaussians.
 
 Example inputs and outputs:
 
@@ -105,6 +105,8 @@ prediction = [0.72174704 0.71462572 0.72048698 0.75382486 0.73161981 0.7494642
 
 - How good are these predictions?
 - Use plots to show the prediction accuracy, either by plotting the actual values vs predicted values or the mean-square-error.
+
+Submit your plots as `1_5_a.png`, `1_5_b.png`, etc. as needed.
 
 ### What to turn in to Gradescope
 *Read this carefully before you submit your solution.*
