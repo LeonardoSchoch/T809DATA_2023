@@ -1,0 +1,3 @@
+The eigenvalues have to decrease because of the PCA which they do as we can see in 3_1_1.png.
+3_2_1.png shows the logarithmic scale of the eigenvalues where we can see that they are decreasing linearly with the logarithm.
+In 3_3_1.png we can see that the cumulative eigenvalue increases steadily until the sum almost reaches 100% where the curve tangents to. 

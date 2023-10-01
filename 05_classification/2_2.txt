@@ -1,0 +1,9 @@
+Both methods have 98.3 % accuracy on the dataset.
+The confusion matrices look the same.
+
+[15,  0,  0],
+[ 0, 20,  1],
+[ 0,  0, 23]
+
+Since there is no visible difference between both methods we can ignore the prior probabilites and say that 
+they are approximatly the same or have no great enough impact on the prediction outcome.

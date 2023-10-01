@@ -21,7 +21,7 @@ def mean_of_class(
     Estimate the mean of a selected class given all features
     and targets in a dataset
     '''
-    ...
+    return np.mean(features[np.where(targets == selected_class)], axis=0)
 
 
 def covar_of_class(
@@ -33,7 +33,7 @@ def covar_of_class(
     Estimate the covariance of a selected class given all
     features and targets in a dataset
     '''
-    ...
+    return np.cov(features[np.where(targets == selected_class)], rowvar=False)
 
 
 def likelihood_of_class(
@@ -46,7 +46,7 @@ def likelihood_of_class(
     from a multivariate normal distribution, given the mean
     and covariance of the distribution.
     '''
-    ...
+    return multivariate_normal(class_mean, class_covar).pdf(feature)
 
 
 def maximum_likelihood(
@@ -66,10 +66,11 @@ def maximum_likelihood(
     '''
     means, covs = [], []
     for class_label in classes:
-        ...
+        means.append(mean_of_class(train_features, train_targets, class_label))
+        covs.append(covar_of_class(train_features, train_targets, class_label))
     likelihoods = []
     for i in range(test_features.shape[0]):
-        ...
+        likelihoods.append([likelihood_of_class(test_features[i], means[c], covs[c]) for c in classes])
     return np.array(likelihoods)
 
 
@@ -82,7 +83,7 @@ def predict(likelihoods: np.ndarray):
     You should return a [likelihoods.shape[0]] shaped numpy
     array of predictions, e.g. [0, 1, 0, ..., 1, 2]
     '''
-    ...
+    return np.argmax(likelihoods, axis=1)
 
 
 def maximum_aposteriori(
@@ -100,4 +101,12 @@ def maximum_aposteriori(
     a [test_features.shape[0] x len(classes)] shaped numpy
     array
     '''
-    ...
+    means, covs, ps = [], [], []
+    for class_label in classes:
+        means.append(mean_of_class(train_features, train_targets, class_label))
+        covs.append(covar_of_class(train_features, train_targets, class_label))
+        ps.append(np.count_nonzero(train_targets == class_label) / len(train_targets))
+    likelihoods = []
+    for i in range(test_features.shape[0]):
+        likelihoods.append([likelihood_of_class(test_features[i], means[c], covs[c]) * ps[c] for c in classes])
+    return np.array(likelihoods)
