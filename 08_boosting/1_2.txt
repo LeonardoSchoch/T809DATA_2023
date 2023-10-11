@@ -1,0 +1,11 @@
+I changed the
+
+    X_full.drop(['PassengerId', 'Cabin', 'Age', 'Name', 'Ticket'], inplace=True, axis=1)
+
+to not drop the Age column anymore.
+
+Then I added the following lines to the NaN replacement section.
+
+# Instead of dropping the age column we replace NaN values with the rounded age mean.
+age_mean = np.round(X_full.Age.mean())
+X_full['Age'].fillna(age_mean, inplace=True)

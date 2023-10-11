@@ -1,0 +1,11 @@
+The following parameters were set in the GradientBoostingClassifier.
+
+    GradientBoostingClassifier(n_estimators=5, max_depth=1, learning_rate=0.1)
+
+In a test run I could achieve the following scores.
+
+accuracy:  0.7873134328358209
+precision: 0.7446808510638298
+recall:    0.6796116504854369
+
+Compared to the RandomForestClassifier it has almost equal accuracy, and precision but way better recall score.
