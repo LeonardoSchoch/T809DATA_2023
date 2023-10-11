@@ -1,0 +1,4 @@
+According to the objective funtion k = 10 is the best.
+
+Each sample would get its own cluster which would theoretically reduce the objective function to 0.
+But it is not recommended because we cannot make any meaningful data analysis with that.
