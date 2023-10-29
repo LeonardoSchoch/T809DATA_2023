@@ -110,6 +110,7 @@ def train_simple_model():
             # represent the class prediction probabilities
             # for sample i.
             out = model(feature)
+            target = target.type(torch.LongTensor)
             # Calculate the loss for the current batch
             loss = loss_metric(out, target)
             # To perform the backward propagation we do:
